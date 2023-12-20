@@ -15,7 +15,7 @@ sh 'mvn clean package'
 }
 }
 
-stage('Archive Output)
+stage('Archive Output')
 {
 parallel{
 
