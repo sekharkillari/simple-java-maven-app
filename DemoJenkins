@@ -1,0 +1,36 @@
+pipeline{
+agent any
+stages {
+       
+stage( 'checkout' )
+{ 
+steps{  
+git credentialsId: '761c458c-8581-4345-b714-693da760e88e', url: 'https://github.com/jdraoo/simple-java-maven-app.git'
+}
+}
+
+stage ('compile, test and package') {
+steps{
+sh 'mvn clean package'
+}
+}
+
+stage('Archive Output)
+{
+parallel{
+
+stage ('Archive Artifacts') { 
+steps{
+archiveArtifacts artifacts: 'target/*.jar', followSymlinks: false
+}
+}
+
+stage ('Publish Test Results') {
+	steps{
+junit 'target/surefire-reports/*.xml'
+}
+}
+
+}}
+}
+}
